@@ -17,6 +17,26 @@ protocol ShellExecuting {
     func executeRaw(_ command: String, arguments: [String], timeout: TimeInterval) async throws -> Data
 }
 
+/// Thread-safe data accumulator for shell output
+private final class DataAccumulator: @unchecked Sendable {
+    private let lock = NSLock()
+    private var data = Data()
+
+    func append(_ newData: Data) {
+        lock.lock()
+        data.append(newData)
+        lock.unlock()
+    }
+
+    func finalize(with finalData: Data) -> Data {
+        lock.lock()
+        data.append(finalData)
+        let result = data
+        lock.unlock()
+        return result
+    }
+}
+
 final class ShellExecutor: ShellExecuting {
 
     func execute(_ command: String, arguments: [String] = [], timeout: TimeInterval = 30.0) async throws -> ShellResult {
@@ -87,17 +107,14 @@ final class ShellExecutor: ShellExecuting {
                 process.terminate()
             }
 
-            let dataLock = NSLock()
-            var outputData = Data()
+            let accumulator = DataAccumulator()
 
             // Drain pipe buffer while process runs to avoid deadlock
             let outputHandle = outputPipe.fileHandleForReading
             outputHandle.readabilityHandler = { handle in
                 let data = handle.availableData
                 if !data.isEmpty {
-                    dataLock.lock()
-                    outputData.append(data)
-                    dataLock.unlock()
+                    accumulator.append(data)
                 }
             }
 
@@ -109,10 +126,7 @@ final class ShellExecutor: ShellExecuting {
 
                 outputHandle.readabilityHandler = nil
 
-                dataLock.lock()
-                outputData.append(outputHandle.readDataToEndOfFile())
-                let finalData = outputData
-                dataLock.unlock()
+                let finalData = accumulator.finalize(with: outputHandle.readDataToEndOfFile())
 
                 timeoutWorkItem.cancel()
 

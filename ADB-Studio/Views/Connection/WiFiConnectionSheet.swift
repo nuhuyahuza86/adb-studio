@@ -467,7 +467,7 @@ struct PairingSheet: View {
 
         do {
             try await adbService.pair(address: pairingAddress, code: pairingCode)
-            discoveryService.markDevicePaired(device)
+            await discoveryService.markDevicePaired(device)
             isPairing = false
 
             isConnecting = true
