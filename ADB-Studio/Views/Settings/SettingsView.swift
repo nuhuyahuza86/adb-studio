@@ -2,90 +2,85 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var settingsStore: SettingsStore
-    @State private var selectedTab: SettingsTab = .general
 
-    enum SettingsTab: String, CaseIterable {
-        case general = "General"
-        case adb = "ADB"
-        case network = "Network"
-        case about = "About"
+    private let minHeight: CGFloat = 320
+    private let maxHeight: CGFloat = 450
 
-        var icon: String {
-            switch self {
-            case .general: return "gearshape.fill"
-            case .adb: return "terminal.fill"
-            case .network: return "wifi"
-            case .about: return "info.circle.fill"
+    var body: some View {
+        TabView {
+            SettingsTabContainer(minHeight: minHeight, maxHeight: maxHeight) {
+                GeneralSettingsTab(settingsStore: settingsStore)
             }
+            .tabItem {
+                Label("General", systemImage: "gearshape.fill")
+            }
+
+            SettingsTabContainer(minHeight: minHeight, maxHeight: maxHeight) {
+                ADBSettingsTab(settingsStore: settingsStore)
+            }
+            .tabItem {
+                Label("ADB", systemImage: "terminal.fill")
+            }
+
+            SettingsTabContainer(minHeight: minHeight, maxHeight: maxHeight) {
+                NetworkSettingsTab(settingsStore: settingsStore)
+            }
+            .tabItem {
+                Label("Network", systemImage: "wifi")
+            }
+
+            AboutSettingsTab()
+                .frame(height: minHeight)
+                .tabItem {
+                    Label("About", systemImage: "info.circle.fill")
+                }
         }
+        .frame(width: 480)
+    }
+}
+
+// MARK: - Settings Tab Container
+
+struct SettingsTabContainer<Content: View>: View {
+    let minHeight: CGFloat
+    let maxHeight: CGFloat
+    @ViewBuilder let content: Content
+
+    @State private var contentHeight: CGFloat = 0
+
+    private var effectiveHeight: CGFloat {
+        max(minHeight, min(contentHeight, maxHeight))
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            tabBar
-
-            Divider()
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    switch selectedTab {
-                    case .general:
-                        GeneralSettingsTab(settingsStore: settingsStore)
-                    case .adb:
-                        ADBSettingsTab(settingsStore: settingsStore)
-                    case .network:
-                        NetworkSettingsTab(settingsStore: settingsStore)
-                    case .about:
-                        AboutSettingsTab()
-                    }
+            if contentHeight > maxHeight {
+                ScrollView {
+                    content
+                        .background(GeometryReader { geo in
+                            Color.clear.preference(key: HeightPreferenceKey.self, value: geo.size.height)
+                        })
                 }
-                .padding(24)
+                .frame(height: maxHeight)
+            } else {
+                content
+                    .background(GeometryReader { geo in
+                        Color.clear.preference(key: HeightPreferenceKey.self, value: geo.size.height)
+                    })
+                Spacer(minLength: 0)
             }
         }
-        .frame(width: 480, height: 420)
-        .background(Color(NSColor.windowBackgroundColor))
-    }
-
-    private var tabBar: some View {
-        HStack(spacing: 4) {
-            ForEach(SettingsTab.allCases, id: \.self) { tab in
-                TabButton(
-                    title: tab.rawValue,
-                    icon: tab.icon,
-                    isSelected: selectedTab == tab
-                ) {
-                    selectedTab = tab
-                }
-            }
+        .frame(height: effectiveHeight > 0 ? effectiveHeight : nil)
+        .onPreferenceChange(HeightPreferenceKey.self) { height in
+            contentHeight = height
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
     }
 }
 
-struct TabButton: View {
-    let title: String
-    let icon: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                    .frame(width: 36, height: 36)
-                    .background(isSelected ? Color.accentColor : Color.clear)
-                    .foregroundColor(isSelected ? .white : .secondary)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                Text(title)
-                    .font(.caption)
-                    .foregroundColor(isSelected ? .primary : .secondary)
-            }
-            .frame(width: 70)
-        }
-        .buttonStyle(.plain)
+private struct HeightPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 
@@ -152,6 +147,7 @@ struct GeneralSettingsTab: View {
                 }
             }
         }
+        .padding(24)
     }
 }
 
@@ -209,6 +205,7 @@ struct ADBSettingsTab: View {
                 }
             }
         }
+        .padding(24)
         .onAppear {
             detectADBPath()
         }
@@ -261,6 +258,7 @@ struct NetworkSettingsTab: View {
                 }
             }
         }
+        .padding(24)
     }
 }
 
@@ -268,35 +266,39 @@ struct NetworkSettingsTab: View {
 
 struct AboutSettingsTab: View {
     var body: some View {
-        VStack(spacing: 20) {
-            Spacer()
-
-            Image(systemName: "antenna.radiowaves.left.and.right")
-                .font(.system(size: 48))
-                .foregroundColor(.accentColor)
+        VStack(spacing: 16) {
+            Image(nsImage: NSApp.applicationIconImage)
+                .resizable()
+                .frame(width: 80, height: 80)
 
             VStack(spacing: 4) {
                 Text("ADB Studio")
                     .font(.title2.bold())
-                Text("Version 1.0")
+                Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
 
-            Text("A native macOS app for managing\nAndroid devices via ADB")
+            Text("A native macOS app for managing Android devices via ADB")
                 .font(.callout)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
-            Spacer()
-
-            VStack(spacing: 8) {
+            VStack(spacing: 12) {
                 Link(destination: URL(string: "https://github.com/Zaphkiel-Ivanovna/adb-studio")!) {
                     Label("View on GitHub", systemImage: "link")
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.accentColor)
+
+                Link(destination: URL(string: "https://ko-fi.com/T6T4E5BP6")!) {
+                    Label("Support on Ko-fi", systemImage: "heart.fill")
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.pink)
             }
+            .padding(.top, 8)
 
             Spacer()
 
@@ -304,7 +306,8 @@ struct AboutSettingsTab: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        .frame(maxWidth: .infinity)
+        .padding(24)
+        .frame(maxWidth: .infinity, alignment: .top)
     }
 }
 

@@ -36,7 +36,9 @@ jobs:
             clean build \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO \
+            MARKETING_VERSION="${{ steps.version.outputs.VERSION }}" \
+            CURRENT_PROJECT_VERSION="${{ github.run_number }}"
 
       - name: 🔏 Ad-hoc Sign
         run: |

@@ -197,6 +197,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Support
+
+If you find ADB Studio useful, consider supporting its development:
+
+<a href="https://ko-fi.com/T6T4E5BP6">
+  <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi">
+</a>
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
