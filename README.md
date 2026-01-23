@@ -26,9 +26,26 @@
 
 <br>
 
-<p align="center">
-  <img src=".github/assets/screenshot.png" alt="ADB Studio Screenshot" width="800">
-</p>
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src=".github/assets/screenshot-1.png" alt="Device Details" width="400"></td>
+    <td><img src=".github/assets/screenshot-2.png" alt="Device Search" width="400"></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Device Details</em></td>
+    <td align="center"><em>Device Search</em></td>
+  </tr>
+  <tr>
+    <td><img src=".github/assets/screenshot-3.png" alt="Device Pairing" width="400"></td>
+    <td><img src=".github/assets/screenshot-4.png" alt="Port Forwarding" width="400"></td>
+  </tr>
+  <tr>
+    <td align="center"><em>Device Pairing</em></td>
+    <td align="center"><em>Port Forwarding</em></td>
+  </tr>
+</table>
 
 ---
 
@@ -187,7 +204,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgements
 
 - [Android Debug Bridge (ADB)](https://developer.android.com/tools/adb) by Google
-- Built with [SwiftUI](https://developer.apple.com/xcode/swiftui/)
+- Built with [SwiftUI](https://developer.apple.com/swiftui/)
 
 ---
 
