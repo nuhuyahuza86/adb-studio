@@ -8,13 +8,13 @@
 
 <p align="center">
   <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/releases">
-    <img src="https://img.shields.io/github/v/release/Music-Player-GO/adb-studio?style=for-the-badge&labelColor=000000" alt="Release">
+    <img src="https://img.shields.io/github/v/release/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="Release">
   </a>
   <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Music-Player-GO/adb-studio?style=for-the-badge&labelColor=000000" alt="License">
+    <img src="https://img.shields.io/github/license/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="License">
   </a>
   <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/stargazers">
-    <img src="https://img.shields.io/github/stars/Music-Player-GO/adb-studio?style=for-the-badge&labelColor=000000" alt="Stars">
+    <img src="https://img.shields.io/github/stars/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="Stars">
   </a>
 </p>
 
@@ -69,6 +69,7 @@ Download the latest release from the [Releases](https://github.com/Zaphkiel-Ivan
 - **ZIP** — Extract and move to Applications
 
 > **Note:** Since the app is not notarized, macOS may show a warning. To open it:
+>
 > - Right-click the app → Open → Open, or
 > - Run `xattr -cr /Applications/ADB-Studio.app` in Terminal
 
