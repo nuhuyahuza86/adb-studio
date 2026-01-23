@@ -4,6 +4,7 @@ enum ADBError: LocalizedError {
     case adbNotFound
     case deviceNotFound(String)
     case connectionFailed(String)
+    case pairingFailed(String)
     case commandFailed(String, Int32)
     case parseError(String)
     case timeout
@@ -18,6 +19,8 @@ enum ADBError: LocalizedError {
             return "Device '\(deviceId)' not found. Please check the connection."
         case .connectionFailed(let message):
             return "Connection failed: \(message)"
+        case .pairingFailed(let message):
+            return "Pairing failed: \(message)"
         case .commandFailed(let command, let exitCode):
             return "Command '\(command)' failed with exit code \(exitCode)"
         case .parseError(let message):

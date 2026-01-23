@@ -14,6 +14,8 @@
 		E00000010000000000000005 /* PortForward.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000005 /* PortForward.swift */; };
 		E00000010000000000000006 /* DeviceHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000006 /* DeviceHistory.swift */; };
 		E00000010000000000000007 /* ADBError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000007 /* ADBError.swift */; };
+		E00000010000000000000034 /* DiscoveredDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000034 /* DiscoveredDevice.swift */; };
+		E00000010000000000000035 /* DeviceDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000035 /* DeviceDiscoveryService.swift */; };
 		E00000010000000000000031 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000031 /* AppSettings.swift */; };
 		E00000010000000000000032 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000032 /* SettingsStore.swift */; };
 		E00000010000000000000033 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000033 /* SettingsView.swift */; };
@@ -73,6 +75,8 @@
 		E00000020000000000000031 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		E00000020000000000000032 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		E00000020000000000000033 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E00000020000000000000034 /* DiscoveredDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveredDevice.swift; sourceTree = "<group>"; };
+		E00000020000000000000035 /* DeviceDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDiscoveryService.swift; sourceTree = "<group>"; };
 		E00000030000000000000001 /* ADB-Studio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ADB-Studio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,6 +139,7 @@
 				E00000020000000000000006 /* DeviceHistory.swift */,
 				E00000020000000000000007 /* ADBError.swift */,
 				E00000020000000000000031 /* AppSettings.swift */,
+				E00000020000000000000034 /* DiscoveredDevice.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 			children = (
 				E00000050000000000000009 /* ADB */,
 				E00000050000000000000010 /* Device */,
+				E00000050000000000000021 /* Discovery */,
 				E00000050000000000000011 /* Media */,
 				E00000050000000000000012 /* Persistence */,
 				E00000050000000000000013 /* Shell */,
@@ -215,6 +221,14 @@
 				E00000020000000000000015 /* ShellExecutor.swift */,
 			);
 			path = Shell;
+			sourceTree = "<group>";
+		};
+		E00000050000000000000021 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				E00000020000000000000035 /* DeviceDiscoveryService.swift */,
+			);
+			path = Discovery;
 			sourceTree = "<group>";
 		};
 		E00000050000000000000014 /* Main */ = {
@@ -377,6 +391,8 @@
 				E00000010000000000000031 /* AppSettings.swift in Sources */,
 				E00000010000000000000032 /* SettingsStore.swift in Sources */,
 				E00000010000000000000033 /* SettingsView.swift in Sources */,
+				E00000010000000000000034 /* DiscoveredDevice.swift in Sources */,
+				E00000010000000000000035 /* DeviceDiscoveryService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,6 +5,7 @@ protocol ADBService {
     func listDevices() async throws -> [Device]
     func connect(to address: String) async throws
     func disconnect(from address: String) async throws
+    func pair(address: String, code: String) async throws
     func getProperty(_ property: String, deviceId: String) async throws -> String
     func getProperties(_ properties: [String], deviceId: String) async throws -> [String: String]
     func shell(_ command: String, deviceId: String) async throws -> String

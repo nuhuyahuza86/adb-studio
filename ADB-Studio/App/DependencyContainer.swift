@@ -10,6 +10,7 @@ final class DependencyContainer: ObservableObject {
     let historyStore: DeviceHistoryStore
     let screenshotService: ScreenshotService
     let deviceManager: DeviceManager
+    let discoveryService: DeviceDiscoveryService
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -26,6 +27,7 @@ final class DependencyContainer: ObservableObject {
             historyStore: historyStore,
             settingsStore: settingsStore
         )
+        self.discoveryService = DeviceDiscoveryService(historyStore: historyStore)
 
         setupSettingsObserver()
     }

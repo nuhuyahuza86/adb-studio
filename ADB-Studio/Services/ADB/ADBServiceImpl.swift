@@ -25,18 +25,7 @@ final class ADBServiceImpl: ADBService {
 
     private func adb(_ arguments: [String], timeout: TimeInterval = 30) async throws -> ShellResult {
         let path = try getADBPath()
-        let cmd = "adb \(arguments.joined(separator: " "))"
-        print("🔧 ADB: \(cmd)")
-
-        let result = try await shell.execute(path, arguments: arguments, timeout: timeout)
-
-        if !result.isSuccess {
-            print("❌ ADB failed (exit \(result.exitCode)): \(result.combinedOutput)")
-        } else if !result.output.isEmpty {
-            print("✅ ADB output: \(result.output.prefix(200))")
-        }
-
-        return result
+        return try await shell.execute(path, arguments: arguments, timeout: timeout)
     }
 
     private func adb(deviceId: String, _ arguments: [String], timeout: TimeInterval = 30) async throws -> ShellResult {
@@ -84,6 +73,40 @@ final class ADBServiceImpl: ADBService {
         }
     }
 
+    func pair(address: String, code: String) async throws {
+        let result = try await adb(["pair", address, code], timeout: 30)
+        let output = result.combinedOutput
+
+        if output.contains("Successfully paired") {
+            return
+        }
+
+        // Protocol fault = code expired or connection dropped
+        if output.contains("protocol fault") || output.contains("couldn't read status") {
+            throw ADBError.pairingFailed("Pairing code expired or connection interrupted. Please generate a new code on your device and try again.")
+        }
+
+        if output.contains("wrong password") || output.contains("incorrect") {
+            throw ADBError.pairingFailed("Incorrect pairing code. Please check the code and try again.")
+        }
+
+        if output.contains("Connection refused") {
+            throw ADBError.pairingFailed("Connection refused. Ensure Wireless Debugging is enabled and the device is in pairing mode.")
+        }
+
+        if output.contains("No route to host") || output.contains("Network is unreachable") {
+            throw ADBError.pairingFailed("Cannot reach device. Ensure both devices are on the same network.")
+        }
+
+        if output.contains("Failed") || output.contains("failed") || output.contains("error") {
+            throw ADBError.pairingFailed(output)
+        }
+
+        if !result.isSuccess {
+            throw ADBError.pairingFailed(output)
+        }
+    }
+
     func getProperty(_ property: String, deviceId: String) async throws -> String {
         let result = try await adb(deviceId: deviceId, ["shell", "getprop", property])
         if !result.isSuccess {
@@ -120,20 +143,17 @@ final class ADBServiceImpl: ADBService {
 
     func takeScreenshot(deviceId: String) async throws -> Data {
         let path = try getADBPath()
-        print("📸 Screenshot: adb -s \(deviceId) exec-out screencap -p")
-
         let data = try await shell.executeRaw(path, arguments: ["-s", deviceId, "exec-out", "screencap", "-p"], timeout: 30)
 
         if data.isEmpty {
-            print("❌ Screenshot failed: empty data")
             throw ADBError.commandFailed("screencap", -1)
         }
 
-        print("✅ Screenshot success: \(data.count) bytes")
         return data
     }
 
     func inputText(_ text: String, deviceId: String) async throws {
+        // Escape special shell chars for `input text`
         let escaped = text
             .replacingOccurrences(of: " ", with: "%s")
             .replacingOccurrences(of: "'", with: "\\'")
