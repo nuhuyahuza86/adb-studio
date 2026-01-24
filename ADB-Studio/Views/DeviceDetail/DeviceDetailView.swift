@@ -30,6 +30,8 @@ struct DeviceDetailView: View {
                     DeviceInfoSection(device: viewModel.device)
                     ToolsView(viewModel: viewModel)
                     PortForwardView(viewModel: viewModel)
+                    APKInstallerView(viewModel: viewModel)
+                    InstalledAppsView(deviceId: device.bestAdbId, adbService: adbService)
                 } else {
                     DeviceStateMessageView(state: device.state)
                 }

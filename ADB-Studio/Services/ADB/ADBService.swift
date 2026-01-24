@@ -17,6 +17,42 @@ protocol ADBService {
     func removeReverseForward(localPort: Int, deviceId: String) async throws
     func removeAllReverseForwards(deviceId: String) async throws
     func enableTcpip(port: Int, deviceId: String) async throws
+    func installAPK(path: URL, deviceId: String, onStart: @escaping (APKInstallHandle) -> Void, onProgress: @escaping (String) -> Void) async throws
+
+    // App Management
+    func listPackages(deviceId: String, filter: AppListFilter) async throws -> [String]
+    func getPackageInfo(packageName: String, deviceId: String) async throws -> InstalledApp
+    func launchApp(packageName: String, deviceId: String) async throws
+    func forceStopApp(packageName: String, deviceId: String) async throws
+    func uninstallApp(packageName: String, keepData: Bool, deviceId: String) async throws
+    func disableApp(packageName: String, deviceId: String) async throws
+    func enableApp(packageName: String, deviceId: String) async throws
+    func openAppSettings(packageName: String, deviceId: String) async throws
+}
+
+enum AppListFilter {
+    case all
+    case thirdParty
+    case system
+    case disabled
+}
+
+final class APKInstallHandle: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _process: Process?
+
+    func setProcess(_ process: Process) {
+        lock.lock()
+        defer { lock.unlock() }
+        _process = process
+    }
+
+    func cancel() {
+        lock.lock()
+        defer { lock.unlock() }
+        guard let process = _process, process.isRunning else { return }
+        process.terminate()
+    }
 }
 
 enum AndroidKeyCode: Int {

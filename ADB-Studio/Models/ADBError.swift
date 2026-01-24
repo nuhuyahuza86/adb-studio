@@ -10,6 +10,10 @@ enum ADBError: LocalizedError {
     case timeout
     case unauthorized(String)
     case offline(String)
+    case installFailed(String)
+    case appNotFound(String)
+    case uninstallFailed(String)
+    case appActionFailed(String, String)
 
     var errorDescription: String? {
         switch self {
@@ -31,6 +35,14 @@ enum ADBError: LocalizedError {
             return "Device '\(deviceId)' is unauthorized. Please accept the debugging prompt on the device."
         case .offline(let deviceId):
             return "Device '\(deviceId)' is offline. Please reconnect the device."
+        case .installFailed(let message):
+            return "Installation failed: \(message)"
+        case .appNotFound(let packageName):
+            return "App '\(packageName)' not found"
+        case .uninstallFailed(let message):
+            return "Uninstall failed: \(message)"
+        case .appActionFailed(let action, let message):
+            return "\(action) failed: \(message)"
         }
     }
 }
