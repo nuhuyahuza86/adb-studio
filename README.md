@@ -47,6 +47,13 @@
   </tr>
 </table>
 
+## Installation
+
+```bash
+brew tap zaphkiel-ivanovna/tap
+brew install --cask adb-studio
+```
+
 ---
 
 ## About
@@ -78,9 +85,9 @@ No more memorizing ADB commands or switching between terminal windows. ADB Studi
     - Homebrew: `brew install android-platform-tools`
     - Or manually in `~/Library/Android/sdk/platform-tools`
 
-## Installation
+## Alternative Installation
 
-### Download
+### Download from Releases
 
 Download the latest release from the [Releases](https://github.com/Zaphkiel-Ivanovna/adb-studio/releases) page:
 

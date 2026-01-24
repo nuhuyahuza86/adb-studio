@@ -76,6 +76,12 @@ jobs:
           shasum -a 256 "${{ env.ZIP_PATH }}" >> checksums.txt
           cat checksums.txt
 
+      - name: 🔢 Extract ZIP SHA256
+        id: sha
+        run: |
+          SHA256=$(shasum -a 256 "${{ env.ZIP_PATH }}" | awk '{print $1}')
+          echo "ZIP_SHA256=${SHA256}" >> $GITHUB_OUTPUT
+
       - name: 🎉 Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -89,3 +95,52 @@ jobs:
             checksums.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🍺 Update Homebrew Tap
+        if: ${{ !contains(github.ref, 'alpha') && !contains(github.ref, 'beta') && !contains(github.ref, 'rc') }}
+        env:
+          TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+          ZIP_SHA256: ${{ steps.sha.outputs.ZIP_SHA256 }}
+        run: |
+          git config --global url."https://x-access-token:${TAP_GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          git clone https://github.com/Zaphkiel-Ivanovna/homebrew-tap.git
+          cd homebrew-tap
+
+          cat > Casks/adb-studio.rb << CASK
+          cask "adb-studio" do
+            version "${VERSION}"
+            sha256 "${ZIP_SHA256}"
+
+            url "https://github.com/Zaphkiel-Ivanovna/adb-studio/releases/download/v#{version}/ADB-Studio-#{version}.zip",
+                verified: "github.com/Zaphkiel-Ivanovna/adb-studio/"
+            name "ADB Studio"
+            desc "Manage Android devices via ADB"
+            homepage "https://github.com/Zaphkiel-Ivanovna/adb-studio"
+
+            livecheck do
+              url :url
+              strategy :github_latest
+            end
+
+            depends_on macos: ">= :sonoma"
+
+            app "ADB-Studio.app"
+
+            zap trash: [
+              "~/Library/Application Support/ADB-Studio",
+              "~/Library/Caches/dev.zaphkiel.adbstudio",
+              "~/Library/Preferences/dev.zaphkiel.adbstudio.plist",
+              "~/Library/Saved Application State/dev.zaphkiel.adbstudio.savedState",
+            ]
+          end
+          CASK
+
+          # Remove leading whitespace from heredoc
+          sed -i '' 's/^          //' Casks/adb-studio.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/adb-studio.rb
+          git commit -m "⬆️ Update ADB Studio to v${VERSION}"
+          git push
