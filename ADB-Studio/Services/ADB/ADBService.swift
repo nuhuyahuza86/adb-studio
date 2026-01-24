@@ -17,6 +17,25 @@ protocol ADBService {
     func removeReverseForward(localPort: Int, deviceId: String) async throws
     func removeAllReverseForwards(deviceId: String) async throws
     func enableTcpip(port: Int, deviceId: String) async throws
+    func installAPK(path: URL, deviceId: String, onStart: @escaping (APKInstallHandle) -> Void, onProgress: @escaping (String) -> Void) async throws
+}
+
+final class APKInstallHandle: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _process: Process?
+
+    func setProcess(_ process: Process) {
+        lock.lock()
+        defer { lock.unlock() }
+        _process = process
+    }
+
+    func cancel() {
+        lock.lock()
+        defer { lock.unlock() }
+        guard let process = _process, process.isRunning else { return }
+        process.terminate()
+    }
 }
 
 enum AndroidKeyCode: Int {

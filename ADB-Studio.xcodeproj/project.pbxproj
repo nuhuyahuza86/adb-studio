@@ -42,6 +42,7 @@
 		E00000010000000000000035 /* DeviceDiscoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000035 /* DeviceDiscoveryService.swift */; };
 		E00000010000000000000036 /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000036 /* UpdateService.swift */; };
 		E00000010000000000000037 /* GitHubRelease.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000037 /* GitHubRelease.swift */; };
+		E00000010000000000000038 /* APKInstallerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00000020000000000000038 /* APKInstallerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		E00000020000000000000035 /* DeviceDiscoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDiscoveryService.swift; sourceTree = "<group>"; };
 		E00000020000000000000036 /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
 		E00000020000000000000037 /* GitHubRelease.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubRelease.swift; sourceTree = "<group>"; };
+		E00000020000000000000038 /* APKInstallerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APKInstallerView.swift; sourceTree = "<group>"; };
 		E00000030000000000000001 /* ADB-Studio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ADB-Studio.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -180,6 +182,7 @@
 				E00000050000000000000018 /* PortForward */,
 				E00000050000000000000019 /* Tools */,
 				E00000050000000000000020 /* Settings */,
+				E00000050000000000000023 /* APKInstaller */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -306,6 +309,14 @@
 			path = Updates;
 			sourceTree = "<group>";
 		};
+		E00000050000000000000023 /* APKInstaller */ = {
+			isa = PBXGroup;
+			children = (
+				E00000020000000000000038 /* APKInstallerView.swift */,
+			);
+			path = APKInstaller;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -409,6 +420,7 @@
 				E00000010000000000000035 /* DeviceDiscoveryService.swift in Sources */,
 				E00000010000000000000036 /* UpdateService.swift in Sources */,
 				E00000010000000000000037 /* GitHubRelease.swift in Sources */,
+				E00000010000000000000038 /* APKInstallerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

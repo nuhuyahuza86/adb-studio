@@ -60,6 +60,7 @@ No more memorizing ADB commands or switching between terminal windows. ADB Studi
 - **Automatic Device Discovery** — Detects Android devices via mDNS/Bonjour for seamless wireless connections
 - **USB & WiFi Support** — Connect devices via USB cable or wirelessly over your local network
 - **One-Click Pairing** — Pair new devices for wireless debugging with just a few clicks
+- **APK Installation** — Drag & drop APK files to install apps directly on your device
 - **Screenshot Capture** — Take screenshots instantly and copy to clipboard or save to Downloads
 - **Text Input** — Send text directly to your Android device from your Mac keyboard
 - **Quick Actions** — Back, Home, Menu, and Enter buttons for rapid navigation
@@ -130,16 +131,26 @@ open ADB-Studio.xcodeproj
 | **Send Text**     | Type on your Mac, send to Android device          |
 | **Quick Actions** | Back, Home, Menu, Enter buttons                   |
 | **TCP/IP Mode**   | Enable wireless debugging via USB                 |
+| **Install APK**   | Drag & drop or select APK files to install        |
 
 ### Port Forwarding
 
 Perfect for React Native, Expo, or any development server:
 
 1. Select a connected device
-2. Go to the **Ports** tab
+2. Go to the **Ports** section
 3. Click **Add Port**
 4. Enter the port number (e.g., `8081` for Metro)
 5. The reverse tunnel is created automatically
+
+### APK Installation
+
+Install apps directly from your Mac:
+
+1. Select a connected device
+2. **Drag & drop** an APK file onto the drop zone, or **click** to open a file picker
+3. The installation progress is displayed in real-time
+4. Cancel anytime if needed — the installation process will be terminated
 
 ## Keyboard Shortcuts
 
@@ -183,6 +194,7 @@ ADB-Studio/
     ├── DeviceDetail/             # Device detail views
     ├── Connection/               # WiFi connection sheet
     ├── PortForward/              # Port forwarding views
+    ├── APKInstaller/             # APK installation views
     ├── Tools/                    # Device tools
     └── Settings/                 # App settings
 ```

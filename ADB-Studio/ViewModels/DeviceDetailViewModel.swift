@@ -19,6 +19,16 @@ final class DeviceDetailViewModel: ObservableObject {
     @Published var editedName = ""
     @Published var tcpipPort = "5555"
     @Published var isEnablingTcpip = false
+    @Published var isInstallingAPK = false
+    @Published var apkInstallProgress: String = ""
+    @Published var apkInstallResult: APKInstallResult?
+    private var apkInstallTask: Task<Void, Never>?
+    private var apkInstallHandle: APKInstallHandle?
+
+    enum APKInstallResult: Equatable {
+        case success
+        case failure(String)
+    }
 
     private let adbService: ADBService
     private let screenshotService: ScreenshotService
@@ -238,6 +248,73 @@ final class DeviceDetailViewModel: ObservableObject {
     func cancelEditingName() {
         editedName = device.customName ?? ""
         isEditingName = false
+    }
+
+    func installAPK(url: URL) {
+        guard url.pathExtension.lowercased() == "apk" else {
+            errorMessage = "Please select a valid APK file"
+            return
+        }
+
+        guard FileManager.default.fileExists(atPath: url.path) else {
+            errorMessage = "File not found"
+            return
+        }
+
+        guard FileManager.default.isReadableFile(atPath: url.path) else {
+            errorMessage = "Cannot read file"
+            return
+        }
+
+        isInstallingAPK = true
+        apkInstallProgress = "Preparing installation..."
+        apkInstallResult = nil
+        errorMessage = nil
+
+        apkInstallTask = Task {
+            do {
+                try await adbService.installAPK(
+                    path: url,
+                    deviceId: device.bestAdbId,
+                    onStart: { [weak self] handle in
+                        self?.apkInstallHandle = handle
+                    },
+                    onProgress: { [weak self] progress in
+                        self?.apkInstallProgress = progress
+                    }
+                )
+                apkInstallTask = nil
+                apkInstallResult = .success
+            } catch is CancellationError {
+                apkInstallTask = nil
+                apkInstallHandle = nil
+                isInstallingAPK = false
+                apkInstallResult = nil
+            } catch let error as ADBError {
+                apkInstallTask = nil
+                apkInstallResult = .failure(error.localizedDescription)
+            } catch {
+                apkInstallTask = nil
+                apkInstallResult = .failure(error.localizedDescription)
+            }
+        }
+    }
+
+    func cancelAPKInstall() {
+        apkInstallHandle?.cancel()
+        apkInstallTask?.cancel()
+        apkInstallTask = nil
+        apkInstallHandle = nil
+        isInstallingAPK = false
+        apkInstallProgress = ""
+        apkInstallResult = nil
+    }
+
+    func dismissAPKInstall() {
+        apkInstallHandle = nil
+        isInstallingAPK = false
+        apkInstallProgress = ""
+        apkInstallResult = nil
     }
 
     private func showSuccess(_ message: String) {

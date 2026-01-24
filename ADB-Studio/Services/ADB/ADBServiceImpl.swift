@@ -213,4 +213,135 @@ final class ADBServiceImpl: ADBService {
             throw ADBError.commandFailed("tcpip \(port)", result.exitCode)
         }
     }
+
+    func installAPK(path: URL, deviceId: String, onStart: @escaping (APKInstallHandle) -> Void, onProgress: @escaping (String) -> Void) async throws {
+        let adbPath = try getADBPath()
+        let process = Process()
+        let handle = APKInstallHandle()
+        handle.setProcess(process)
+        let timeout: TimeInterval = 300
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            let outputPipe = Pipe()
+            let errorPipe = Pipe()
+
+            process.executableURL = URL(fileURLWithPath: adbPath)
+            process.arguments = ["-s", deviceId, "install", "-r", path.path]
+            process.standardOutput = outputPipe
+            process.standardError = errorPipe
+
+            var outputData = Data()
+            var errorData = Data()
+            var hasResumed = false
+            let resumeLock = NSLock()
+
+            func safeResume(with result: Result<Void, Error>) {
+                resumeLock.lock()
+                defer { resumeLock.unlock() }
+                guard !hasResumed else { return }
+                hasResumed = true
+                switch result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+
+            let timeoutWork = DispatchWorkItem {
+                if process.isRunning {
+                    process.terminate()
+                    safeResume(with: .failure(ADBError.timeout))
+                }
+            }
+            DispatchQueue.global().asyncAfter(deadline: .now() + timeout, execute: timeoutWork)
+
+            outputPipe.fileHandleForReading.readabilityHandler = { _ in
+                let data = outputPipe.fileHandleForReading.availableData
+                if !data.isEmpty {
+                    outputData.append(data)
+                    if let str = String(data: data, encoding: .utf8) {
+                        let lines = str.components(separatedBy: .newlines).filter { !$0.isEmpty }
+                        for line in lines {
+                            DispatchQueue.main.async { onProgress(line) }
+                        }
+                    }
+                }
+            }
+
+            errorPipe.fileHandleForReading.readabilityHandler = { _ in
+                let data = errorPipe.fileHandleForReading.availableData
+                if !data.isEmpty {
+                    errorData.append(data)
+                }
+            }
+
+            process.terminationHandler = { proc in
+                timeoutWork.cancel()
+                outputPipe.fileHandleForReading.readabilityHandler = nil
+                errorPipe.fileHandleForReading.readabilityHandler = nil
+
+                if proc.terminationReason == .uncaughtSignal {
+                    safeResume(with: .failure(CancellationError()))
+                    return
+                }
+
+                let output = String(data: outputData, encoding: .utf8) ?? ""
+                let errorOutput = String(data: errorData, encoding: .utf8) ?? ""
+
+                if proc.terminationStatus != 0 || output.contains("Failure") || errorOutput.contains("Failure") {
+                    let message = Self.parseInstallError(output: output, errorOutput: errorOutput)
+                    safeResume(with: .failure(ADBError.installFailed(message)))
+                } else {
+                    safeResume(with: .success(()))
+                }
+            }
+
+            do {
+                try process.run()
+                DispatchQueue.main.async { onStart(handle) }
+            } catch {
+                timeoutWork.cancel()
+                safeResume(with: .failure(ADBError.commandFailed("install", -1)))
+            }
+        }
+    }
+
+    private static func parseInstallError(output: String, errorOutput: String) -> String {
+        let combined = output + errorOutput
+
+        if combined.contains("INSTALL_FAILED_ALREADY_EXISTS") {
+            return "App already installed with different signature"
+        }
+        if combined.contains("INSTALL_FAILED_INVALID_APK") {
+            return "Invalid APK file"
+        }
+        if combined.contains("INSTALL_FAILED_INSUFFICIENT_STORAGE") {
+            return "Insufficient storage on device"
+        }
+        if combined.contains("INSTALL_FAILED_VERSION_DOWNGRADE") {
+            return "Cannot downgrade app version"
+        }
+        if combined.contains("INSTALL_PARSE_FAILED_NO_CERTIFICATES") {
+            return "APK is not signed"
+        }
+        if combined.contains("INSTALL_FAILED_UPDATE_INCOMPATIBLE") {
+            return "Update incompatible with existing app"
+        }
+        if combined.contains("INSTALL_FAILED_NO_MATCHING_ABIS") {
+            return "APK not compatible with device architecture"
+        }
+
+        if let range = combined.range(of: "Failure \\[([^\\]]+)\\]", options: .regularExpression) {
+            return String(combined[range])
+        }
+
+        if !errorOutput.isEmpty {
+            return errorOutput
+        }
+        if !output.isEmpty {
+            return output
+        }
+        return "Unknown installation error"
+    }
 }
